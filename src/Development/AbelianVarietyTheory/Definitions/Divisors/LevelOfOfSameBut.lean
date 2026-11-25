@@ -106,8 +106,6 @@ structure RatHyp (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (Rl : RealDat3 D A
   galois : IsGalois ℚ D.LL0
   small : SmallHas D Rl.C
   inUse : D.ntw.NonzeroIndexPlace i
-  low : ∀ P : Pl D.host.E, ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK *
-    (D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde') : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → P ∈ D.ntw.S0 i
 
 theorem levelOf_congr {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {Rl : RealDat3 D A3 Ks}
     {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd} {ρ ρ' : Setup D.ntw} (hρ : ρ.Good) (hρ' : ρ'.Good) (hp : RealPin Rl cG ρ)
