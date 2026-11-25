@@ -66,7 +66,5 @@ structure RatHyp0 (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (Rl : RealDat3 D 
   galois : IsGalois ℚ D.LL0
   small : SmallHas D Rl.C
   inUse : D.ntw.NonzeroIndexPlace i
-  low : ∀ P : Pl D.host.E, ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK *
-    (D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde') : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → P ∈ D.ntw.S0 i
 
 end GlobalTheory.BigOn.Exp
