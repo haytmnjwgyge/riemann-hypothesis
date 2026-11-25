@@ -28,15 +28,6 @@ variable {G : Type} [iG : Group G] [fG : Fintype G] {Pl0 I0 T : Type} {A3 : FamI
   {cG : G0 R.Pg D.R.r ≃* G0g D.nd} {geo : GlobalTheory.RealGeo.GeoHalf C R.toRealDat fun _ => 1} {S : RatDat D.ntw}
   {YS : NExpRealS R cG S} {cf : CharFrame D}
 
-theorem psi_of_grp (h : GrpTie D A3.A F.P0 F.ψ0 F.P1 F.ψ1 (R.eG.trans cG)) (Z : ExportTie YS geo.v₀) (i b) (g : F.P0)
-    (hg : cG (R.eG g) ∈ D.nexp.U) :
-    Z.ρ.e i b (D.nexp.psiU i b ⟨_, hg⟩ : (FractionRing (D.ntw.O i))ˣ) = (D.what₂.embLL (F.ψ0 g : D.what₂.LLˣ))⁻¹ := by
-  obtain ⟨x, hx, e⟩ := h.psi0 g hg i b
-  have h1 := Z.good.e_LL0 i b x
-  refine (congrArg (Z.ρ.e i b) e).trans (h1.trans ?_)
-  change D.what₂.embLL (x : D.what₂.LL) = _
-  rw [hx, Units.val_inv_eq_inv_val, map_inv₀]
-
 theorem low_of_tied {Fr : TwFrame D} (h : NTwTied D Fr) (hq : D.host.q ∣ (NumberField.discr D.host.E).natAbs) (i) (P : PlE D.host)
     (hP : ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK * (D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde') : ℕ) :
       𝓞 D.host.E) ∈ P.asIdeal) : P ∈ D.ntw.S0 i := by
