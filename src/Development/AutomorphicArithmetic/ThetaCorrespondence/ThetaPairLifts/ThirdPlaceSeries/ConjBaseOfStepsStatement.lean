@@ -251,7 +251,7 @@ theorem fw_eq_zero_or_exists_norm_algComb (hP : GlobalTheory.Published.CuspRapid
   have hRat : RatHyp (setCE p.T c') (fullHeckeRealDatMovedReadings p.R w) (F2 p) B'.κ B'.v₀ B'.O t j hV' := by
     refine ⟨h0.size, h0.host, h0.std, B'.fw.laws, hC, hU', ⟨B'.fw⟩,
       ⟨B'.fw.laws, B'.fw.alg_eq, B'.fw.kap, B'.fw.hv₀, B'.fw.chiR, B'.fw.x0⟩, h0.io, h0.guard, h0.fin, B'.pins j, ?_,
-      hfr j hV', h0.galois, h0.small, h0.inUse, h0.low⟩
+      hfr j hV', h0.galois, h0.small, h0.inUse⟩
     rw [hph]
     exact B'.phase j hU'
   have hpin' : RealPin (fullHeckeRealDatMovedReadings p.R w) p.cG ρ :=
@@ -268,16 +268,12 @@ theorem fw_eq_zero_or_exists_norm_algComb (hP : GlobalTheory.Published.CuspRapid
 theorem serRef_of_reciprocity_ray_class : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
     GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → _root_.GlobalTheory.BigOn.Exp.SerRefAlt := by
   intro hP hA hRF hS
-  have hL := _root_.GlobalTheory.BigOn.Exp.lowAt_holds_alt
-  have hT := _root_.GlobalTheory.BigOn.Exp.twAdm_alt
-  unfold _root_.GlobalTheory.BigOn.Exp.LowerBoundAtPlace at hL
-  unfold _root_.GlobalTheory.BigOn.Exp.TwAdmAlt at hT
   unfold _root_.GlobalTheory.BigOn.Exp.SerRefAlt
-  refine (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hL hT).imp fun Fm x hx i p hp hM w _ j h => ?_
+  refine _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp _root_.GlobalTheory.BigOn.Exp.twAdm_alt fun Fm x hx i p hp hM w _ j h => ?_
   intro ρ hρ ν hpin hN hR0
   refine ⟨ν, hN, hR0, fun s g P hd hl => ?_⟩
   rcases _root_.GlobalTheory.SerRefPt.fw_eq_zero_or_exists_norm_algComb hP hA hRF (GlobalTheory.SerStd.seriesRatS_of hS) Fm x hx i p hp hM _ j
-    (_root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx i p hp hM _ h.2.2.2 h.1 j) ρ hρ _ hpin with H | ⟨ν₁, hN₁, H⟩
+    (_root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx i p hp hM _ h.2.2 j) ρ hρ _ hpin with H | ⟨ν₁, hN₁, H⟩
   · have h0 := theta_eq_zero p.nexp p.v₀ hρ _ j _ H hR0 hd
     have h1 : AlgComb p.nexp p.v₀ j (ν • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) g P) := by
       rw [h0, smul_zero]
@@ -663,7 +659,7 @@ theorem fw_eq_zero_or_exists_norm_algComb (hP : GlobalTheory.Published.CuspRapid
   have hRat : RatHyp (setCE p.T c') (fullHeckeRealDatMovedReadings p.R w) (F2 p) B'.κ B'.v₀ B'.O t j hV' := by
     refine ⟨h0.size, h0.host, h0.std, B'.fw.laws, hC, hU', ⟨B'.fw⟩,
       ⟨B'.fw.laws, B'.fw.alg_eq, B'.fw.kap, B'.fw.hv₀, B'.fw.chiR, B'.fw.x0⟩, h0.io, h0.guard, h0.fin, B'.pins j, ?_,
-      hfr j hV', h0.galois, h0.small, h0.inUse, h0.low⟩
+      hfr j hV', h0.galois, h0.small, h0.inUse⟩
     rw [hph]
     exact B'.phase j hU'
   have hpin' : RealPin (fullHeckeRealDatMovedReadings p.R w) p.cG ρ :=
@@ -685,14 +681,10 @@ theorem norm_smul_theta_alt (hP : GlobalTheory.Published.CuspRapidDecay) (hA : G
     ∀ ν' : ℂ, IsNorm p.R p.v₀ (ρ.B ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)) ν' →
     ∃ (a : ℂ) (φ : GA (Fm.D x i) (Wc (Fm.D x i) j) → ℂ), (∃ m : ℕ, m ≠ 0 ∧ a ^ m = 1) ∧ SmallComb p.nexp p.v₀ j φ ∧
       ν' • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P = a • φ := by
-  have hL := _root_.GlobalTheory.BigOn.Exp.lowAt_holds_alt
-  have hT := _root_.GlobalTheory.BigOn.Exp.twAdm_alt
-  unfold _root_.GlobalTheory.BigOn.Exp.LowerBoundAtPlace at hL
-  unfold _root_.GlobalTheory.BigOn.Exp.TwAdmAlt at hT
-  refine (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hL hT).imp fun Fm x hx i p hp hM w _ j h => ?_
+  refine _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp _root_.GlobalTheory.BigOn.Exp.twAdm_alt fun Fm x hx i p hp hM w _ j h => ?_
   intro ρ hρ ν hpin hlev hR0 s g P hd hl ν' hN
   rcases _root_.GlobalTheory.SerSmall.fw_eq_zero_or_exists_norm_algComb hP hA hRF hS Fm x hx i p hp hM _ j
-    (_root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx i p hp hM _ h.2.2.2 h.1 j) ρ hρ _ hpin (chi_mem_small hM.2.2 hρ hlev _ j _) with H | ⟨ν₁, hN₁, H⟩
+    (_root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx i p hp hM _ h.2.2 j) ρ hρ _ hpin (chi_mem_small hM.2.2 hρ hlev _ j _) with H | ⟨ν₁, hN₁, H⟩
   · have h0 := GlobalTheory.SerRefPt.theta_eq_zero p.nexp p.v₀ hρ _ j _ H hR0 hd
     exact ⟨1, 0, ⟨1, one_ne_zero, one_pow 1⟩, SmallComb.zero, by rw [h0, smul_zero, smul_zero]⟩
   · obtain ⟨ζ, hζ, e⟩ := exists_root_of_isNorm p.R p.v₀ _ hN₁ hN

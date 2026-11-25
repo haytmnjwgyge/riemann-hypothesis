@@ -860,7 +860,7 @@ theorem rat_unframe_alt : GlobalTheory.Published.CuspRapidDecay → ∀ {eps : �
   have hRat : RatHyp (setCE p.T c') (fullHeckeRealDatMovedReadings p.R w) (F2 p) B'.κ B'.v₀ B'.O t j hV' := by
     refine ⟨h0.size, h0.host, h0.std, B'.fw.laws, hC, hU', ⟨B'.fw⟩,
       ⟨B'.fw.laws, B'.fw.alg_eq, B'.fw.kap, B'.fw.hv₀, B'.fw.chiR, B'.fw.x0⟩, h0.io, h0.guard, h0.fin, B'.pins j, ?_,
-      hfr j hV', h0.galois, h0.small, h0.inUse, h0.low⟩
+      hfr j hV', h0.galois, h0.small, h0.inUse⟩
     rw [hph]
     exact B'.phase j hU'
   refine ⟨setCE p.T c', iA, fullHeckeRealDatMovedReadings p.R w, p.cG, S', YS', F2 p, B'.κ, B'.v₀, B'.O, hV', hRat, fun ρ h =>
@@ -901,11 +901,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV.Cons
 open Formalism.IndefR.FWT GlobalTheory.BigTop GlobalTheory.OntoChain GlobalTheory.RealIndexBound GlobalTheory.OnTies GlobalTheory.SeriesTie GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 namespace GlobalTheory.BigOn.Exp
 theorem rowAt_of_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
-    GlobalTheory.SerStd.SeriesRatS → _root_.GlobalTheory.BigOn.Exp.LowerBoundAtPlace → _root_.GlobalTheory.BigOn.Exp.TwAdmAlt → _root_.GlobalTheory.BigOn.Exp.ConditionAtPlace := by
-  intro hP hA hR hS hL hT
+    GlobalTheory.SerStd.SeriesRatS → _root_.GlobalTheory.BigOn.Exp.TwAdmAlt → _root_.GlobalTheory.BigOn.Exp.ConditionAtPlace := by
+  intro hP hA hR hS hT
   refine _root_.GlobalTheory.BigOn.Exp.twist_at_statement_of_ratHypAt ?_ (_root_.GlobalTheory.SeriesTie.RatAll.ratRow hA hR hS)
-  exact _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hL hT) fun Fm x hx i p hp hM w _ j h =>
-    _root_.GlobalTheory.UnframePt.rat_unframe_alt hP Fm x hx i p hp hM _ j (_root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx i p hp hM _ h.2.2.2 h.1 j)
+  exact _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp hT fun Fm x hx i p hp hM w _ j h =>
+    _root_.GlobalTheory.UnframePt.rat_unframe_alt hP Fm x hx i p hp hM _ j (_root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx i p hp hM _ h.2.2 j)
 end GlobalTheory.BigOn.Exp
 end
 end
@@ -1208,7 +1208,7 @@ theorem exportSt_of_hypotheses_alt (hC : GlobalTheory.Published.CuspRapidDecay) 
     (hS : GlobalTheory.SerStd.SeriesRatS) : _root_.GlobalTheory.BigOn.ExportedStatement :=
   have tA := _root_.GlobalTheory.BigOn.Exp.twAdm_alt
   have tC := _root_.GlobalTheory.TwistChr.twChr_of_twAdm_alt hA tA
-  have row := _root_.GlobalTheory.BigOn.Exp.rowAt_of_alt hC hA hR hS _root_.GlobalTheory.BigOn.Exp.lowAt_holds_alt tA
+  have row := _root_.GlobalTheory.BigOn.Exp.rowAt_of_alt hC hA hR hS tA
   _root_.GlobalTheory.BigOn.Exp.InductionConditions.exportSt ⟨_root_.GlobalTheory.BigOn.Exp.canEx_holds_alt, _root_.GlobalTheory.BigOn.Exp.canProj_alt, tA, row, _root_.GlobalTheory.BigOn.Exp.tieRat_of_alt tA row, _root_.GlobalTheory.BigOn.Exp.recSide_of_twAdm_alt tA, _root_.GlobalTheory.BigOn.Exp.adaptEx_alt,
     _root_.GlobalTheory.BigOn.Exp.conjBase_of_cusp_decay_and_reciprocity hC hA hR hS, _root_.GlobalTheory.BigOn.Exp.TwConj.conj_tw_of_prints hC hA hR hD hW hS tA tC, _root_.GlobalTheory.BigOn.Exp.baseLe_holds, _root_.GlobalTheory.BigOn.Exp.baseGe_of_alt hC hA hR hS,
     _root_.GlobalTheory.BigOn.Exp.TupLe.twLe_alt hC hA hR tA tC, _root_.GlobalTheory.BigOn.Exp.twGe_alt hC hA hR hS tA tC⟩

@@ -42,9 +42,6 @@ def heckeSeriesOfRealHeight {hH hV hs} (e : _root_.GlobalTheory.HeightCounting.d
   reads := hr
   del := hd
   Z := e.ser.ex
-  U_eq g := (c.row.grp.lvl0 g).symm
-  psi_eq := psi_of_grp c.row.grp e.ser.ex
-  low := low_of_tied c.a.all.tw (q_dvd_discr _)
   Sb i P hP := by
     have hA : t.r.z.R.Sb = t.r.z.R.Pg := t.r.z.pins.char.allPl
     obtain ⟨k, hk⟩ := e.ser.ex.good.Pg i ⟨0, lt_of_lt_of_le two_pos B.R.two_le_m⟩ true P

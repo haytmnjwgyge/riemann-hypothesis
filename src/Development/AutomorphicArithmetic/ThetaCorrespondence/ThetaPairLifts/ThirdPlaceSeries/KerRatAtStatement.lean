@@ -973,9 +973,8 @@ open GlobalTheory.RealGeo GlobalTheory.Unframe GlobalTheory.UnframePt in
 theorem kerRatAt_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
     GlobalTheory.SerStd.SeriesRatS → _root_.GlobalTheory.BigOn.Exp.SerBase.KernelRationalAt := by
   intro hP hA hR hS
-  refine (_root_.GlobalTheory.BigOn.Exp.lowAt_holds_alt.and _root_.GlobalTheory.BigOn.Exp.twAdm_alt).imp fun Fm x hx i p hp hM w hw j hLT => ?_
-  obtain ⟨l1, l2⟩ := hLT
-  have h0 := _root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx i p hp hM _ l2.2.2 l1 j
+  refine _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp _root_.GlobalTheory.BigOn.Exp.twAdm_alt fun Fm x hx i p hp hM w hw j h => ?_
+  have h0 := _root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx i p hp hM _ h.2.2 j
   obtain ⟨c', w', hw', hfr, B', hv⟩ := exists_framed_half hP h0.size (GlobalTheory.Core5.of_core h0.core) (geoHalf p) h0.unif
     (_root_.GlobalTheory.T.inGeo_half_of_ratHyp0 hP Fm x hx i p hp hM _ j h0)
   obtain ⟨S', YS', -⟩ := GlobalTheory.T.seriesRationality_back_from_movedReadings p.R p.cG p.Sx p.nexp w' hw'
@@ -998,7 +997,7 @@ theorem kerRatAt_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Pu
   have hRat : RatHyp (setCE p.T c') (fullHeckeRealDatMovedReadings p.R w') (F2 p) B'.κ B'.v₀ B'.O ((Fm.ex x hx i).nch.twI w) j hV' := by
     refine ⟨h0.size, h0.host, h0.std, B'.fw.laws, hC, hU', ⟨B'.fw⟩,
       ⟨B'.fw.laws, B'.fw.alg_eq, B'.fw.kap, B'.fw.hv₀, B'.fw.chiR, B'.fw.x0⟩, h0.io, h0.guard, h0.fin, B'.pins j, ?_,
-      hfr j hV', h0.galois, h0.small, h0.inUse, h0.low⟩
+      hfr j hV', h0.galois, h0.small, h0.inUse⟩
     rw [hph]
     exact B'.phase j hU'
   intro χ ξR ω φ hK h hh y hy u hu

@@ -306,9 +306,8 @@ open GlobalTheory.ConjTwist
 
 theorem coefAt_of_twAdm_alt : _root_.GlobalTheory.BigOn.Exp.TwAdmAlt → _root_.GlobalTheory.BigOn.Exp.TwConj.CoefficientCondition := by
   intro hA
-  refine _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hA _root_.GlobalTheory.BigOn.Exp.lowAt_holds_alt) fun Fm x hx i p hr hm w _ j H => ?_
-  obtain ⟨⟨-, -, hin⟩, hlow⟩ := H
-  have hR := _root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx i p hr hm _ hin hlow j
+  refine _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp hA fun Fm x hx i p hr hm w _ j H => ?_
+  have hR := _root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx i p hr hm _ H.2.2 j
   intro ρ ν hρ hp hN
   obtain ⟨hν0, c₀, hsc, n, hn, hνn⟩ := hN
   obtain ⟨-, -, -, -, u, hu, -⟩ := id hsc
@@ -533,9 +532,9 @@ namespace GlobalTheory.BigOn.Exp.TwConj
 open GlobalTheory.ConjTwist
 theorem fixAt_holds_alt : GlobalTheory.Published.RayClassFieldSt → _root_.GlobalTheory.BigOn.Exp.TwAdmAlt → _root_.GlobalTheory.BigOn.Exp.TwConj.FixedPointCondition := by
   intro hRF hA
-  refine _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hA _root_.GlobalTheory.BigOn.Exp.lowAt_holds_alt) fun Fm x hx k p hr hm w _ j H => ?_
+  refine _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp hA fun Fm x hx k p hr hm w _ j H => ?_
   intro ρ hρ hp hL τ hτ
-  have hR := _root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx k p hr hm _ H.1.2.2 H.2 j
+  have hR := _root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx k p hr hm _ H.2.2 j
   have hτ' : ∀ z ∈ (Formalism.L2.Host.embLL0 (Fm.D x k)).fieldRange, τ z = z := by
     rintro _ ⟨y, rfl⟩
     exact hτ y
@@ -1079,10 +1078,10 @@ namespace GlobalTheory.BigOn.Exp.TwConj
 open Classical in
 theorem tupAt_alt (h1 : GlobalTheory.Published.CuspRapidDecay) (h2 : GlobalTheory.Published.GlobalArtinReciprocity) (h3 : GlobalTheory.Published.RayClassFieldSt)
     (h4 : GlobalTheory.Published.DiscreteSeriesCover) (h5 : GlobalTheory.Published.CasselmanWallach) (hA : _root_.GlobalTheory.BigOn.Exp.TwAdmAlt) (hC : _root_.GlobalTheory.BigOn.Exp.TwistCharacter) : _root_.GlobalTheory.BigOn.Exp.TwConj.TupleCondition := by
-  refine _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hA _root_.GlobalTheory.BigOn.Exp.lowAt_holds_alt) (_root_.GlobalTheory.BigOn.Exp.TwConj.twLevAt_holds_alt h1 h2 h3 hA hC)) fun Fm x hx i p hr hm w _ j H => ?_
-  obtain ⟨⟨hadm, hlow⟩, hlev⟩ := H
+  refine _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hA (_root_.GlobalTheory.BigOn.Exp.TwConj.twLevAt_holds_alt h1 h2 h3 hA hC)) fun Fm x hx i p hr hm w _ j H => ?_
+  obtain ⟨hadm, hlev⟩ := H
   intro ρ ρ' hρ hρ' hp hS hAd
-  have H0 := _root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx i p hr hm _ hadm.2.2 hlow j
+  have H0 := _root_.GlobalTheory.BigOn.Exp.ratHyp0_at_point_alt Fm x hx i p hr hm _ hadm.2.2 j
   have hB : BaseOf p.R.toRealDat j (baseW (Fm.ex x hx i) w j ρ) := baseOf_of_realPin H0.core.lev hρ hp _ j _
   have hLaws : Laws p.T p.R.toRealDat (F2 p) p.κ p.v₀ p.O (phs p) j (baseW (Fm.ex x hx i) w j ρ) :=
     ⟨H0.core, H0.fin, H0.fw, H0.io, H0.guard, H0.pins, H0.phase, hB⟩
