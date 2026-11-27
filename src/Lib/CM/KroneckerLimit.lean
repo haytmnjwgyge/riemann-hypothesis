@@ -26,7 +26,10 @@ Known result: Kronecker's first limit formula. Here the real limit from the righ
 lattice with the discriminant. In Tau Ceti's proof rows are compared with integrals by the mean
 value theorem. Source: C. L. Siegel, Lectures on Advanced Analytic Number Theory (1961), Chapter I,
 Theorem 1; for a proof of this shape, F. Chamizo, A simple evaluation of a theta value, the
-Kronecker limit formula and a formula of Ramanujan, Ramanujan J. (2022), Prop. 3.1.
+Kronecker limit formula and a formula of Ramanujan, Ramanujan J. 59 (2022),
+[§3, Proposition 1, p. 949](https://doi.org/10.1007/s11139-022-00586-0).
+For the area-normalized sum (`k = 1`), take `Q(u,v) = |u − vτ|² / Im τ`. Then Chamizo's
+`D = 4` and `z_Q = τ`, and reindexing by `(m,n) = (−v,u)` gives `UpperHalfPlane.epsteinZeta`.
 -/
 
 @[expose] public section
