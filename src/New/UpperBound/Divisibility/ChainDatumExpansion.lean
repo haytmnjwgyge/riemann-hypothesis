@@ -371,19 +371,18 @@ lemma IsChainDatum.exists_isWeakChainDatum_compositeLift_eq {ϑ : D.Twist}
       (D.admissibleTranslations ϑ.normQ ∩ D.supportedTranslations (D.M * ϑ.normQ))
       ϑ.normQ 1 (ϑ.Q = ∅) (D.M ^ (3 * D.f * D.m * D.n D.m ^ 2)) (gluedTensor Ψ) :=
     ⟨Ψ, hΨ.toIsAdmissibleCoeffs, hΨ.gluedTensor_eq_sum_translates.left⟩
-  have h_size : (D.M ^ (3 * D.f * D.m * D.n D.m ^ 2) * Fintype.card D.GluingClasses : ℝ) ≤
-      Real.exp (D.x ^ 60) := by
-    have h_card : (Fintype.card D.GluingClasses : ℝ) ≤ D.N ^ (D.f * D.m * D.n D.m) :=
-      mod_cast D.card_gluingClasses_le.trans
-        (Nat.pow_le_pow_right NeZero.one_le (Nat.div_le_self _ 2))
-    apply (mul_le_mul_of_nonneg_left h_card (by positivity)).trans
-    exact Real.le_exp_of_log_le D.le_of_hasLogBound
+  have h_size : (D.M ^ (3 * D.f * D.m * D.n D.m ^ 2) * D.N ^ (D.f * D.m * D.n D.m) : ℝ) ≤
+      Real.exp (D.x ^ 60) := Real.le_exp_of_log_le D.le_of_hasLogBound
   obtain ⟨Ψ', h_adm, h_sum⟩ : IsAdmissibleCombination D.ungluedVacuum
       (D.admissibleTranslations (ϑ.normQ * D.N)) ϑ.normQ 1 (ϑ.Q = ∅)
       (Real.exp (D.x ^ 60)) (gluedTensor Ψ) :=
     h_outer.bind 1 (Fintype.card D.GluingClasses)
       (fun x hx ↦ isAdmissibleCombination_sum_ungluedVacuum (Set.inter_subset_left hx) (ϑ.Q = ∅))
-      (by simp) fun _ ↦ by simpa only [Nat.abs_cast] using h_size
+      (by simp) fun _ ↦ by
+        rw [Nat.abs_cast]
+        refine (mul_le_mul_of_nonneg_left ?_ (by positivity)).trans h_size
+        exact_mod_cast D.card_gluingClasses_le.trans
+          (Nat.pow_le_pow_right NeZero.one_le (Nat.div_le_self _ 2))
   have h_eq : gluedTensor Ψ = plainTensor Ψ' := by rw [h_sum, plainTensor_eq_sum_ungluedVacuum]
   have h_inv : (plainTensor Ψ').IsInvariant ϑ := by simpa [← h_eq] using hΨ.isInvariant
   refine ⟨Ψ', ⟨h_adm, isJointlyInvariant_of_plainTensor h_inv⟩, fun φ ↦ ?_⟩
