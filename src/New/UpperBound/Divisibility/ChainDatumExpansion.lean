@@ -199,27 +199,30 @@ lemma gluingTuple_mem_supportedTranslations (y : D.GluingClasses) :
     h_single _ _ fun k' ↦ poleRow_apply_eq_zero (y i) k' w hw_star]
 
 open scoped Classical in
-/-- A class of the gluing assigns a residue modulo `N` to each double lift `i`, basis index of
-`X_{2i+1}` and place `w ∣ π`. There are at most `N ^ (f m n_m / 2)` of them. -/
+/-- There are `h = ϱ + 1` double lifts. The odd-indexed middle spaces have average rank
+`n h`, and each contributes one residue modulo `N` per basis index and place above `π`. -/
+lemma card_gluingClasses : Fintype.card D.GluingClasses =
+    D.N ^ (D.f * (D.ϱ + 1) * D.n (D.ϱ + 1)) := by
+  have ranks (h : ℕ) : ∑ i ∈ Finset.range h, D.n (2 * i + 1) = h * D.n h := by
+    induction h with
+    | zero => simp
+    | succ h ih => rw [Finset.sum_range_succ, ih]; simp only [n]; ring
+  rw [Fintype.card_pi]
+  simp only [Fintype.card_fun, ZMod.card, Fintype.card_coe, card_piNPlaces, card_X,
+    ← pow_mul, Finset.prod_pow_eq_pow_sum, ← Finset.mul_sum, Nat.mul_assoc]
+  rw [Fin.sum_univ_eq_sum_range (fun i ↦ D.n (2 * i + 1)), ranks]
+
+open scoped Classical in
+/-- Bounding the average middle rank by the final rank bounds the number of gluing classes
+by `N ^ (f m n_m / 2)`. -/
 lemma card_gluingClasses_le : Fintype.card D.GluingClasses ≤ D.N ^ (D.f * D.m * D.n D.m / 2) := by
-  -- There are `m / 2 = ϱ + 1` double lifts, each with at most `N ^ (f n_m)` classes.
-  have hm : D.m = 2 * D.ϱ + 2 := D.m_eq_two_mul_varrho_add_two
-  have h_exponent : D.f * D.m * D.n D.m = D.f * D.n D.m * (D.ϱ + 1) * 2 := by
-    linear_combination (D.f * D.n D.m) * hm
-  have h_pair (i : Fin (D.ϱ + 1)) :
-      Fintype.card (D.X (2 * (i : ℕ) + 1) → D.piNPlaces → ZMod D.N) ≤ D.N ^ (D.f * D.n D.m) :=
-    calc _ = D.N ^ (D.f * D.n (2 * i + 1)) := by
-          rw [Fintype.card_fun, Fintype.card_fun, ZMod.card, Fintype.card_coe, card_piNPlaces,
-            card_X, pow_mul]
-      _ ≤ D.N ^ (D.f * D.n D.m) :=
-        Nat.pow_le_pow_right NeZero.one_le (Nat.mul_le_mul_left _ (D.n_mono (by lia)))
-  calc Fintype.card D.GluingClasses
-    _ = ∏ i : Fin (D.ϱ + 1), Fintype.card (D.X (2 * (i : ℕ) + 1) → D.piNPlaces → ZMod D.N) :=
-      Fintype.card_pi
-    _ ≤ (D.N ^ (D.f * D.n D.m)) ^ (D.ϱ + 1) := by
-      simpa using Finset.prod_le_pow_card .univ _ _ fun i _ ↦ h_pair i
-    _ = D.N ^ (D.f * D.m * D.n D.m / 2) := by
-      rw [h_exponent, Nat.mul_div_cancel _ two_pos, ← pow_mul]
+  rw [D.card_gluingClasses]
+  apply Nat.pow_le_pow_right NeZero.one_le
+  apply (Nat.le_div_iff_mul_le two_pos).2
+  have hm : D.m = 2 * (D.ϱ + 1) := D.m_eq_two_mul_varrho_add_two
+  calc D.f * (D.ϱ + 1) * D.n (D.ϱ + 1) * 2
+    _ = D.f * D.m * D.n (D.ϱ + 1) := by rw [hm]; ring
+    _ ≤ D.f * D.m * D.n D.m := Nat.mul_le_mul_left _ (D.n_mono (by omega))
 
 /-- The tensor `⊗ⱼ translateDatum t j` of the translates of the integral vacuum by `t`, grouped by
 double lifts and not glued. -/
@@ -270,26 +273,23 @@ Let the tuple `t` be admissible for `q`: each `t j`, times the conjugate of `D.p
 the places prime to `q`. Then the sum of `D.ungluedVacuum (t + gluingTuple y)` over all classes `y`
 equals `∑ x, r x • D.ungluedVacuum x` with `r` supported on tuples admissible for `q N`. The values
 of `r` are integral away from `q` with denominator `1`, and all conjugates of `r` have `ℓ¹`-norm at
-most `N ^ (f m n_m)`. The norm bound is only asked when `boundRequired` holds. -/
+most the number of gluing classes (see `card_gluingClasses`). The norm bound is only asked when
+`boundRequired` holds. -/
 lemma isAdmissibleCombination_sum_ungluedVacuum {q : ℕ} {t : D.Translations}
     (ht : t ∈ D.admissibleTranslations q) (boundRequired : Prop) :
     IsAdmissibleCombination D.ungluedVacuum (D.admissibleTranslations (q * D.N)) q 1 boundRequired
-      (D.N ^ (D.f * D.m * D.n D.m))
+      (Fintype.card D.GluingClasses)
       (∑ y : D.GluingClasses, D.ungluedVacuum (t + gluingTuple y)) := by
   -- The coefficients are `1`, so the sum of norms is the number of classes.
-  have h_card : (Fintype.card D.GluingClasses : ℝ) ≤ D.N ^ (D.f * D.m * D.n D.m) :=
-    mod_cast D.card_gluingClasses_le.trans
-      (Nat.pow_le_pow_right NeZero.one_le (Nat.div_le_self _ 2))
   have h_classes : IsAdmissibleCombination
       (fun y : D.GluingClasses ↦ D.ungluedVacuum (t + gluingTuple y))
-      .univ q 1 boundRequired (D.N ^ (D.f * D.m * D.n D.m))
+      .univ q 1 boundRequired (Fintype.card D.GluingClasses)
       (∑ y : D.GluingClasses, D.ungluedVacuum (t + gluingTuple y)) := by
     simpa using IsAdmissibleCombination.of_sum (c := 1) (d := 1)
       (v := fun y : D.GluingClasses ↦ D.ungluedVacuum (t + gluingTuple y)) (s := .univ)
-      (by simp) fun _ _ ↦ by simpa using h_card
-  exact h_classes.bind 1 1 (fun y _ ↦ .single (t + gluingTuple y)
-    (add_mem_admissibleTranslations_mul_N ht (gluingTuple_mem_supportedTranslations y)))
-    (by simp) (by simp)
+      (by simp) (by simp)
+  exact h_classes.bind_one fun y _ ↦ .single (t + gluingTuple y)
+    (add_mem_admissibleTranslations_mul_N ht (gluingTuple_mem_supportedTranslations y))
 
 variable {D}
 
@@ -371,14 +371,19 @@ lemma IsChainDatum.exists_isWeakChainDatum_compositeLift_eq {ϑ : D.Twist}
       (D.admissibleTranslations ϑ.normQ ∩ D.supportedTranslations (D.M * ϑ.normQ))
       ϑ.normQ 1 (ϑ.Q = ∅) (D.M ^ (3 * D.f * D.m * D.n D.m ^ 2)) (gluedTensor Ψ) :=
     ⟨Ψ, hΨ.toIsAdmissibleCoeffs, hΨ.gluedTensor_eq_sum_translates.left⟩
-  have h_size : (D.M ^ (3 * D.f * D.m * D.n D.m ^ 2) * D.N ^ (D.f * D.m * D.n D.m) : ℝ) ≤
-      Real.exp (D.x ^ 60) := Real.le_exp_of_log_le D.le_of_hasLogBound
+  have h_size : (D.M ^ (3 * D.f * D.m * D.n D.m ^ 2) * Fintype.card D.GluingClasses : ℝ) ≤
+      Real.exp (D.x ^ 60) := by
+    have h_card : (Fintype.card D.GluingClasses : ℝ) ≤ D.N ^ (D.f * D.m * D.n D.m) :=
+      mod_cast D.card_gluingClasses_le.trans
+        (Nat.pow_le_pow_right NeZero.one_le (Nat.div_le_self _ 2))
+    apply (mul_le_mul_of_nonneg_left h_card (by positivity)).trans
+    exact Real.le_exp_of_log_le D.le_of_hasLogBound
   obtain ⟨Ψ', h_adm, h_sum⟩ : IsAdmissibleCombination D.ungluedVacuum
       (D.admissibleTranslations (ϑ.normQ * D.N)) ϑ.normQ 1 (ϑ.Q = ∅)
       (Real.exp (D.x ^ 60)) (gluedTensor Ψ) :=
-    h_outer.bind 1 (D.N ^ (D.f * D.m * D.n D.m))
+    h_outer.bind 1 (Fintype.card D.GluingClasses)
       (fun x hx ↦ isAdmissibleCombination_sum_ungluedVacuum (Set.inter_subset_left hx) (ϑ.Q = ∅))
-      (by simp) fun _ ↦ by simpa using h_size
+      (by simp) fun _ ↦ by simpa only [Nat.abs_cast] using h_size
   have h_eq : gluedTensor Ψ = plainTensor Ψ' := by rw [h_sum, plainTensor_eq_sum_ungluedVacuum]
   have h_inv : (plainTensor Ψ').IsInvariant ϑ := by simpa [← h_eq] using hΨ.isInvariant
   refine ⟨Ψ', ⟨h_adm, isJointlyInvariant_of_plainTensor h_inv⟩, fun φ ↦ ?_⟩
