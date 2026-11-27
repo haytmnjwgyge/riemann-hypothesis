@@ -143,7 +143,8 @@ seal Finset.sum in
 group. -/
 theorem adelicEquiv_ratEquiv (γ : S.G E) : X.adelicEquiv (X.ratEquiv γ) = S.ratToAdelic γ := by
   -- The conjugations by the point of `V` in `X.adelicEquiv` and in `X.ratEquiv` cancel.
-  exact X.adelicEquiv.apply_symm_apply (S.ratToAdelic γ)
+  erw [V.toRatCoords.trans_apply, V.toRatCoords.apply_symm_apply]
+  rfl
 
 /-- Let the hermitian space V fit the filling data S, and let x_v be the component of the point
 `V.x` at an infinite place v. Then x_vᴴ J x_v is the diagonal matrix of the signs ε, where J is the
