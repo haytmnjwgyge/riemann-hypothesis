@@ -199,8 +199,9 @@ lemma gluingTuple_mem_supportedTranslations (y : D.GluingClasses) :
     h_single _ _ fun k' ↦ poleRow_apply_eq_zero (y i) k' w hw_star]
 
 open scoped Classical in
-/-- There are `h = ϱ + 1` double lifts. The odd-indexed middle spaces have average rank
-`n h`, and each contributes one residue modulo `N` per basis index and place above `π`. -/
+/-- The number of gluing classes is `N ^ (f * h * n h)` for `h = ϱ + 1` double lifts.
+For each double lift, a class chooses a residue modulo `N` for each basis index of its middle
+space and each place above `π`. These middle spaces have average rank `n h`. -/
 lemma card_gluingClasses : Fintype.card D.GluingClasses =
     D.N ^ (D.f * (D.ϱ + 1) * D.n (D.ϱ + 1)) := by
   have ranks (h : ℕ) : ∑ i ∈ Finset.range h, D.n (2 * i + 1) = h * D.n h := by
