@@ -268,6 +268,14 @@ lemma jetSize_sub_primeSum_mem_Icc (τ : D.Φ) :
     D.primeSum_mem_Icc (Nat.cast_nonneg _) hκa τ
   constructor <;> linarith
 
+/-- Each infinite place contributes at least its weight times `log b` to the direction amount,
+so the main amount `D.mainAmount` is nonnegative. -/
+lemma mainAmount_nonneg : 0 ≤ D.mainAmount := by
+  have h_log : 0 ≤ D.logB := (HasLogBound.pos D).le
+  unfold mainAmount directionAmount
+  exact mul_nonneg (by positivity) <| sum_nonneg fun τ _ ↦
+    (mul_nonneg (Nat.cast_nonneg _) h_log).trans (D.jetSize_sub_primeSum_mem_Icc τ).1
+
 /-- The direction amount `D.directionAmount = ∑_τ (s_∞(κ(τ)) - s_fin(κ(τ), τ))`, summed over all `f`
 places with weights `κ`, lies between `b #Φ_a` and `25 f b log b`. -/
 lemma directionAmount_mem_Icc :
@@ -296,9 +304,6 @@ lemma le_mainAmount : D.x ^ 4 * D.f * D.a ≤ D.mainAmount := by
   -- The first step is an inequality between products of the parameters, compared by logarithms.
   calc D.x ^ 4 * D.f * D.a ≤ D.m * D.k * (D.b * towerDeg D.towerExp) := D.le_of_hasLogBound
     _ ≤ D.mainAmount := by grw [mainAmount, ← D.card_aPlaces, D.directionAmount_mem_Icc.1]
-
-/-- The main amount `D.mainAmount` is nonnegative. -/
-lemma mainAmount_nonneg : 0 ≤ D.mainAmount := le_trans (by positivity) D.le_mainAmount
 
 end Data
 
