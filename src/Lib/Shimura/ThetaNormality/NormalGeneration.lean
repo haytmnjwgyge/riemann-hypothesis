@@ -366,12 +366,9 @@ lemma pow_normBall_le (n : ℕ) :
   simp only [normBall]
   induction n with
   | zero =>
-    rw [pow_zero, Submodule.one_le, Submodule.mem_inf, Submodule.restrictScalars_mem,
-      Submodule.mem_iInf]
-    refine ⟨?_, fun i ↦ ?_⟩
-    · simpa only [pow_zero] using thetaSpace.pow (zero_mem (B.thetaSpace χ)) 0
-    · change (0 • B).sizeAt v (f ^ 0) i ≤ (0 • B).thetaNorm v (f ^ 0)
-      rw [sizeAt_pow, thetaNorm_pow, Pi.pow_apply, pow_zero, pow_zero]
+    simp only [thetaNorm_pow]
+    have h_unit : (1 : ℂ) ∈ v.leSubmodule 1 := v.map_one.le
+    simpa [thetaShift_apply_apply, h_unit] using thetaSpace.pow (zero_mem (B.thetaSpace χ)) 0
   | succ n ih =>
     refine (mul_le_mul_left ih _).trans ?_
     rw [Submodule.mul_le, thetaNorm_pow, thetaNorm_pow]
