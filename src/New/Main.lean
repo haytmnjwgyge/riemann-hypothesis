@@ -7,8 +7,9 @@ import TauCeti.NumberTheory.LSeries.RiemannZeta.RiemannHypothesis
 # From non-vanishing in Re s > 1/2 to zeros on the critical line
 
 In the open critical strip the functional equation sends a zero at `s` for `χ` to a zero at `1 - s`
-for `χ⁻¹`. Complex conjugation gives a zero at `1 - conj s` for `χ` itself. Thus the half-plane bound
-`DirichletLNonvanishingRightOfHalf` rules out zeros to the left of the critical line as well.
+for `χ⁻¹`. Complex conjugation gives a zero at `1 - conj s` for `χ` itself.
+Thus the half-plane bound `DirichletLNonvanishingRightOfHalf`
+rules out zeros to the left of the critical line as well.
 
 * `New.zeros_on_line`: the zeros of `L(s, χ)` in `0 < re s < 1` have `re s = 1 / 2`.
 * `New.zeta_zeros_on_line`: the character modulo `1` supplies the half-plane bound for `ζ`, so its
