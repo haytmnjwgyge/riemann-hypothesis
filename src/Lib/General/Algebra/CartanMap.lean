@@ -467,7 +467,7 @@ section Multiplicative
 variable {l m : ℕ} {Q : Subgroup G} {z : G}
   {φ : ∀ A : DiscreteModule R G, A.FiniteKilledFixedInj l Q z m → ℚ≥0}
 
-/-- A function multiplicative in short exact sequences takes the same value on isomorphic modules. -/
+/-- A multiplicative `φ` takes the same value on isomorphic modules. -/
 lemma apply_eq_of_equiv (h_mul : IsMultiplicative φ)
     {A B : DiscreteModule R G} {hA : A.FiniteKilledFixedInj l Q z m}
     {hB : B.FiniteKilledFixedInj l Q z m} (u : A.ρ.Equiv B.ρ) : φ A hA = φ B hB := by
